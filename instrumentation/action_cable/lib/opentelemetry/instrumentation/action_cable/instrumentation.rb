@@ -9,20 +9,31 @@ module OpenTelemetry
     module ActionCable
       # The Instrumentation class contains logic to detect and install the ActionCable instrumentation
       class Instrumentation < OpenTelemetry::Instrumentation::Base
+        MINIMUM_VERSION = Gem::Version.new('6.0.0')
         install do |_config|
           require_dependencies
         end
 
         present do
-          # TODO: Replace true with a definition check of the gem being instrumented
-          # Example: `defined?(::Rack)`
-          true
+          defined?(::ActionCable)
         end
+
+        compatible do
+          gem_version >= MINIMUM_VERSION
+        end
+
+        option :disallowed_notification_payload_keys, default: [],  validate: :array
+        option :notification_payload_transform,       default: nil, validate: :callable
 
         private
 
+        def gem_version
+          puts ::ActionCable.version
+          ::ActionCable.version
+        end
+
         def require_dependencies
-          # TODO: Include instrumentation dependencies
+          require_relative 'railtie'
         end
       end
     end
