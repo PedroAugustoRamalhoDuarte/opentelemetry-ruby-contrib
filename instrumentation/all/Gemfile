@@ -8,5 +8,6 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'opentelemetry-instrumentation-action_cable', path: '../action_cable'
 gem 'opentelemetry-instrumentation-racecar', path: '../racecar'
 gem 'opentelemetry-instrumentation-rake', path: '../rake'
